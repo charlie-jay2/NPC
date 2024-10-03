@@ -1,0 +1,272 @@
+/* General Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Jockey One", sans-serif; /* Applying Jockey One font */
+}
+
+body {
+  background-color: white; /* Set the base background color */
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow: hidden; /* Prevent scrollbars if the ellipse overflows */
+}
+
+.footer {
+  background-color: transparent; /* Match your primary color */
+  color: black; /* Change as needed */
+  text-align: center;
+  padding: 10px 0; /* Adjust padding as needed */
+  position: relative;
+}
+
+.ellipse-background {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1500px; /* Adjust the width of the ellipse */
+  height: 600px; /* Adjust the height of the ellipse */
+  background: radial-gradient(
+    ellipse at center,
+    rgba(224, 195, 252, 1) 50%,
+    rgba(142, 197, 252, 1) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: translate(-50%, -50%);
+  filter: blur(100px); /* Adds the smooth fade-out blur effect */
+  z-index: -1;
+}
+
+.npc-logo {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  font-size: 21px;
+  color: black;
+  text-shadow: 1px 6px 10px black; /* Black drop-shadow for top bar text */
+}
+
+.flipped-c {
+  display: inline-block;
+  transform: scaleX(-1); /* Flipping the C horizontally */
+}
+
+.npc-logo img {
+  width: 60px;
+  height: auto;
+}
+
+.container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.top-bar {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  padding: 10px;
+  font-size: 21px;
+  color: black;
+  text-align: right;
+  font-weight: normal;
+  border-bottom: 1px solid #ddd;
+  text-shadow: 4px 4px 10px black; /* Black drop-shadow for top bar text */
+}
+
+.title-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title-line {
+  width: 100px;
+  height: 2px;
+  background-color: white;
+  margin: 0 10px;
+}
+
+.title-section h1 {
+  font-size: 36px;
+  color: white;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-shadow: 3px 3px 7px black; /* Black drop-shadow for title text */
+}
+
+/* Buttons */
+.buttons {
+  margin: 40px 0;
+}
+
+.button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 850px;
+  padding: 10px 30px;
+  margin: 20px auto;
+  background: white;
+  border-radius: 30px;
+  color: black;
+  font-size: 20px;
+  font-weight: lighter;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-shadow: 1px 1px 10px black; /* Black drop-shadow for button text */
+}
+
+.button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.button1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 850px;
+  padding: 10px 30px;
+  margin: 20px auto;
+  background: white;
+  border-radius: 30px;
+  color: black;
+  font-size: 20px;
+  font-weight: lighter;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-shadow: 2px 2px 5px black; /* Black drop-shadow for button text */
+}
+
+.button1:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.arrow {
+  font-size: 24px;
+  margin-left: 20px;
+  transition: transform 0.3s ease;
+  text-shadow: 2px 2px 5px black; /* Black drop-shadow for arrows */
+}
+
+.button:hover .arrow {
+  transform: translateX(10px);
+}
+
+.button1:hover .arrow {
+  transform: translateX(10px);
+}
+
+/* Social Media Buttons */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 350px;
+  padding: 10px 0;
+  margin: 0 15px;
+  border-radius: 30px;
+  background-color: white;
+  color: black;
+  font-size: 18px;
+  font-weight: lighter;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  text-shadow: 2px 2px 5px black; /* Black drop-shadow for social button text */
+}
+
+.social-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.social-btn .icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.popup {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1000; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.7); /* Black w/ opacity */
+}
+
+.popup-content {
+  background-color: white;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  border-radius: 25px;
+  width: 50%; /* Could be more or less, depending on screen size */
+  height: 40%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  margin-top: -15px;
+  font-size: 28px;
+  font-weight: bold;
+  transition: 0.6s ease-in-out;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Notification Bar Styles */
+.notification-bar {
+  display: none; /* Hidden by default */
+  width: 100%;
+  padding: 10px;
+  font-size: 18px;
+  text-align: center;
+  background-color: #ffcc00; /* Default color, changeable via JS */
+  color: black;
+  position: relative;
+  z-index: 100;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.notif-button {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: white; /* Default button color */
+  color: black;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  transition: 0.6s ease-in-out;
+}
+
+.notif-button:hover {
+  background-color: #ddd; /* Button hover effect */
+  transform: scale(1.1);
+}

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <title>Nightly Pirate Cinema</title>
+
+    <meta property="og:title" content="Nightly Pirate Cinema" />
+    <meta
+      property="og:description"
+      content="A Java Minecraft 1.20.1 cinema that is hosted every Friday, Saturday, and Sunday" />
+    <meta property="og:image" content="./logo2.png" />
+    <meta property="og:type" content="website" />
+    <link rel="stylesheet" href="styles.css" />
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6384095419114445"
+      crossorigin="anonymous"></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Jockey+One&display=swap" />
+    <meta name="google-adsense-account" content="ca-pub-6384095419114445" />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Jockey One", sans-serif;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+      }
+
+      .container {
+        width: 80%;
+        max-width: 1200px;
+        margin: 20px auto;
+        background-color: transparent;
+        border-radius: 10px;
+        text-align: center;
+        text-shadow: 3px 3px 7px black; /* Black drop-shadow for title text */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+
+      .screen {
+        width: 100%;
+        background-color: lightblue;
+        color: purple;
+        text-align: center;
+        padding: 10px;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+
+      .showings {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 20px;
+        flex-wrap: wrap; /* Allow wrapping for smaller screens */
+      }
+
+      .showing-box {
+        background-color: white;
+        color: black;
+        padding: 10px;
+        border-radius: 10px;
+        cursor: pointer;
+        text-align: center;
+        width: 150px;
+        font-weight: bold;
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: 2px solid white;
+      }
+
+      .showing-box:hover {
+        transform: scale(1.05);
+        background-color: white;
+        color: black;
+        box-shadow: 0px 8px 20px black;
+      }
+
+      .available-seats {
+        margin-bottom: 20px;
+      }
+
+      /* Additional styles for mobile responsiveness */
+      @media (max-width: 768px) {
+        .container {
+          width: 95%;
+          padding: 15px;
+        }
+
+        .showing-box {
+          width: 100px;
+        }
+      }
+      footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background-color: transparent;
+        padding-top: 20px;
+        padding-bottom: 15px;
+        color: black;
+      }
+      iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+        z-index: -1; /* Make sure the iframe is behind any content */
+      }
+
+      .nav {
+        text-decoration: none;
+        color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe
+      src="https://rive.app/community/12991-24575-npc-waves1/embed"
+      frameborder="0"
+      allow="autoplay"
+      allowfullscreen
+      scrolling="no">
+    </iframe>
+    <div class="container">
+      <h1>Nightly Pirate Cinema</h1>
+      <div class="available-seats"></div>
+
+      <div class="showings">
+        <div>
+          <img src="./posters/DW.jpg" style="width: auto; height: 100px" />
+          <div
+            class="showing-box"
+            onclick="window.location.href='booking/dw3.html'">
+            Sunday<br />20:00<br />Deadpool & Wolverine
+          </div>
+        </div>
+        <!-- <div>
+          <img src="./posters/IO2.jpg" style="width: auto; height: 100px" />
+          <div
+            class="showing-box"
+            onclick="window.location.href='booking/io2.html'">
+            Sat<br />22:00<br />Inside Out 2
+          </div>
+        </div>
+        <div>
+          <img src="./posters/DM4.jpeg" style="width: auto; height: 100px" />
+          <div
+            class="showing-box"
+            onclick="window.location.href='booking/dm4.html'">
+            Sat<br />00:00<br />Despicable Me 4
+          </div>
+        </div>
+        <div>
+          <img src="./posters/dune2.jpg" style="width: auto; height: 100px" />
+          <div
+            class="showing-box"
+            onclick="window.location.href='booking/dp2.html'">
+            Sun<br />21:00<br />Dune Part 2
+          </div>
+        </div> -->
+      </div>
+    </div>
+
+    <footer>
+      <p>
+        Nightly Pirate Cinema © 2024 - All Rights Reserved |
+        <a href="https://discord.gg/5xDxHSBm4s" class="nav">Discord</a>
+      </p>
+    </footer>
+  </body>
+</html>

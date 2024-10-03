@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>inconvenience</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap"
+      rel="stylesheet" />
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden; /* Prevent scrollbars */
+        background-color: black; /* Set background color */
+        color: white;
+        font-family: "Lexend";
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Set body height to full viewport */
+      }
+
+      .logo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Center the image */
+        z-index: 1;
+        width: 400px; /* Adjust the size of the logo */
+        height: auto; /* Maintain aspect ratio */
+      }
+
+      .inco {
+        text-align: center; /* Center text inside the element */
+      }
+
+      h1 {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="inco">
+      <h1>We do apologise for any inconvenience</h1>
+      <p>Any concerns, please ask a member of staff.</p>
+      <p>Kind regards, Nightly Pirate Cinema team</p>
+    </div>
+
+    <audio id="backgroundAudio" preload="auto" autoplay loop>
+      <source src="./cs.wav" type="audio/wav" />
+      Your browser does not support the audio tag.
+    </audio>
+  </body>
+</html>

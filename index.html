@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nightly Pirate Cinema</title>
+
+    <meta property="og:title" content="Nightly Pirate Cinema" />
+    <meta
+      property="og:description"
+      content="A Java Minecraft 1.20.1 cinema that is hosted every Friday, Saturday, and Sunday" />
+    <meta property="og:image" content="./logo2.png" />
+    <meta property="og:type" content="website" />
+    <!-- Google Font: Jockey One -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Jockey+One&display=swap" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="notibar.js" defer></script>
+  </head>
+  <body>
+    <div class="ellipse-background"></div>
+
+    <!-- NPC Logo -->
+    <div class="npc-logo">
+      <span class="npc-letter">N</span>
+      <span class="npc-letter">P</span>
+      <span class="flipped-c">C</span>
+    </div>
+    <div class="top-bar">NEW & TRENDING MOVIES IN MINECRAFT FOR FREE.</div>
+    <div id="notification-bar" class="notification-bar">
+      <span id="notif-text"></span>
+      <a id="button1" class="notif-button" target="_blank"></a>
+      <a id="button2" class="notif-button" target="_blank"></a>
+      <a id="button3" class="notif-button" target="_blank"></a>
+    </div>
+    <div class="container">
+      <div class="title-section">
+        <div class="title-line"></div>
+        <h1>Nightly Pirate Cinema</h1>
+        <div class="title-line"></div>
+      </div>
+
+      <div class="buttons">
+        <div class="button" data-url="whats-on.html">
+          <span>See What's On</span>
+          <span class="arrow">→</span>
+        </div>
+        <div
+          class="button"
+          data-url="https://mega.nz/file/diFiUbLS#pQzILAWYi_Nez_8kYyhG6DR8W9bQ3r1Z9JRySSY-cOw">
+          <span>Get The Modpack</span>
+          <span class="arrow">→</span>
+        </div>
+        <div
+          class="button"
+          data-url="https://mail.google.com/mail/?view=cm&fs=1&to=nightlypiratecinema@gmail.com">
+          <span>Contact Us</span>
+          <span class="arrow">→</span>
+        </div>
+        <div class="button1" id="terms-button">
+          <span>Terms of Service</span>
+          <span class="arrow">→</span>
+        </div>
+      </div>
+
+      <div class="social-icons">
+        <a href="https://discord.gg/5xDxHSBm4s" class="social-btn discord">
+          <img src="discord.png" alt="Discord" class="icon" />
+          Discord
+        </a>
+        <a
+          href="https://www.youtube.com/@NightlyPirateCinema"
+          class="social-btn youtube">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png"
+            alt="YouTube"
+            class="icon" />
+          YouTube
+        </a>
+      </div>
+    </div>
+
+    <footer class="footer">
+      Nightly Pirate Cinema © 2024 - All Rights Reserved
+    </footer>
+
+    <div id="terms-popup" class="popup">
+      <div class="popup-content">
+        <span class="close">&times;</span>
+        <p>
+          NPC (Nightly Pirate Cinema) are not responsible for the distribution
+          and/or production of pirated/illegally obtained media and are simply a
+          service that offers the viewing of certain media for the entertainment
+          of others. Our media sources will remain anonymous and may change
+          depending on the specific media being displayed, which of those, we
+          are not responsible for.
+        </p>
+        <br />
+        <p>
+          By using Nightly Pirate Cinema, you agree to follow all rules and
+          guidelines set forth by Minecraft, as well as the specific rules of
+          Nightly Pirate Cinema. Any violation of these rules may result in
+          restricted access or removal from our service.
+        </p>
+        <br />
+        <p>
+          Please respect the community and ensure that your actions align with
+          the values of fair play and enjoyment for all users.
+        </p>
+      </div>
+    </div>
+    <script src="popup.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

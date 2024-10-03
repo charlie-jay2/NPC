@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fullscreen Video</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden; /* Prevent scrollbars */
+        background-color: black; /* Set background color */
+      }
+
+      video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover; /* Ensures video covers the screen */
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Video Element -->
+    <video id="myVideo" autoplay muted playsinline>
+      <source
+        src="https://www.dropbox.com/scl/fi/j76jpvibzrnrzenejgtrq/preindent.mp4?rlkey=jmyedujmorhwp9kmcr3uyq440&raw=1"
+        type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+
+    <script>
+      window.onload = function () {
+        var video = document.getElementById("myVideo");
+
+        // Ensure the video has audio at max volume
+        video.volume = 1.0; // Set volume to 100%
+        video.muted = false; // Unmute the video
+
+        // Try to enter fullscreen when the video starts playing
+        video.addEventListener("play", function () {
+          if (video.requestFullscreen) {
+            video.requestFullscreen();
+          } else if (video.webkitRequestFullscreen) {
+            video.webkitRequestFullscreen(); // Safari
+          } else if (video.msRequestFullscreen) {
+            video.msRequestFullscreen(); // IE11
+          } else if (video.mozRequestFullScreen) {
+            video.mozRequestFullScreen(); // Firefox
+          }
+        });
+
+        // Retry autoplay after 1 second delay
+        setTimeout(function () {
+          video.play().catch((error) => {
+            console.error("Autoplay was blocked or failed:", error);
+          });
+        }, 1000); // 1 second delay
+
+        setTimeout(function () {
+          window.location.href = "d2.html";
+        }, 15000); // 15000 milliseconds = 15 seconds
+      };
+    </script>
+  </body>
+</html>

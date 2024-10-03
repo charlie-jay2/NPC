@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <title>Seating Plan</title>
+
+    <meta property="og:title" content="Nightly Pirate Cinema" />
+    <meta
+      property="og:description"
+      content="A Java Minecraft 1.20.1 cinema that is hosted every Friday, Saturday, and Sunday" />
+    <meta property="og:image" content="./logo2.png" />
+    <meta property="og:type" content="website" />
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6384095419114445"
+      crossorigin="anonymous"></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Jockey+One&display=swap" />
+    <meta name="google-adsense-account" content="ca-pub-6384095419114445" />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Jockey One", sans-serif; /* Applying Jockey One font */
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+      }
+
+      .container {
+        width: 80%;
+        max-width: 1200px;
+        margin: 20px auto;
+        background-color: transparent;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        backdrop-filter: blur(10px); /* Apply blur effect */
+        -webkit-backdrop-filter: blur(10px); /* For Safari support */
+      }
+
+      .screen {
+        width: 100%;
+        background-color: white;
+        color: black;
+        text-align: center;
+        padding: 10px;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        border: 2px solid #333;
+      }
+
+      .seating-plan {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .row {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+      }
+
+      .row.front {
+        gap: 5px;
+      }
+
+      .row.left {
+        justify-content: flex-start;
+        gap: 5px;
+      }
+
+      .row-label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        text-align: left;
+        padding-left: 10px;
+      }
+
+      .seat {
+        background-color: white;
+        color: black;
+        border: 2px solid #333;
+        border-radius: 5px;
+        text-align: center;
+        padding: 10px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        transition: 0.2s ease-in-out;
+      }
+
+      .seat.unavailable {
+        background-color: #ddd;
+        cursor: not-allowed;
+      }
+
+      .seat:hover {
+        background-color: black;
+        color: white;
+      }
+
+      /* Form styling */
+      .form-container {
+        display: none;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: #f1f1f1;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        width: 50%;
+      }
+
+      .form-container.active {
+        display: flex;
+      }
+
+      .form-container input {
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        width: 100%;
+      }
+
+      .form-container button {
+        background-color: #54794c;
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .form-container button:hover {
+        background-color: #4a6840;
+      }
+
+      .seat.selected {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      input,
+      button {
+        display: block;
+        margin: 10px 0;
+      }
+      #availableSeats {
+        margin-bottom: 20px;
+      }
+      .h1 {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .showings {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .showing-box {
+        background-color: white;
+        color: black;
+        padding: 10px;
+        border-radius: 10px;
+        cursor: pointer;
+        text-align: center;
+        width: 150px;
+        font-weight: bold;
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: 2px solid white;
+        box-shadow: 0px 3px 10px black;
+      }
+
+      .showing-box:hover {
+        transform: scale(1.05);
+        background-color: white;
+        color: black;
+        box-shadow: 0px 8px 20px black;
+      }
+
+      a {
+        color: black; /* Set the text color to white */
+        text-decoration: underline; /* Add underline to the text */
+        transition: 0.3s ease-in-out;
+      }
+
+      a:hover {
+        color: lightblue; /* Keep the text white on hover */
+        text-decoration: underline; /* Ensure underline remains on hover */
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          width: 95%;
+          padding: 15px;
+        }
+
+        .seating-plan {
+          gap: 10px;
+        }
+
+        .seat {
+          width: 30px;
+          height: 30px;
+          padding: 8px;
+          font-size: 12px;
+        }
+
+        .showing-box {
+          width: 100px;
+          font-size: 14px;
+        }
+
+        .form-container {
+          width: 80%;
+        }
+
+        .screen {
+          font-size: 16px;
+          padding: 8px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .seat {
+          width: 25px;
+          height: 25px;
+          padding: 5px;
+          font-size: 10px;
+        }
+
+        .row {
+          gap: 3px;
+        }
+
+        .showing-box {
+          width: 90px;
+          font-size: 12px;
+        }
+
+        .form-container {
+          width: 100%;
+        }
+
+        .screen {
+          font-size: 14px;
+          padding: 5px;
+        }
+      }
+
+      /* Fullscreen Button */
+      .fullscreen-btn {
+        background-color: white;
+        color: black;
+        box-shadow: 0px 3px 10px black;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-top: 20px;
+        text-align: center;
+        transition: 0.5s ease-in-out;
+      }
+
+      .fullscreen-btn:hover {
+        background-color: white;
+        color: black;
+        transform: scale(1.05);
+        transition: 0.5s ease-in-out;
+        box-shadow: 0px 8px 20px black;
+      }
+
+      /* Notification for Portrait mode */
+      .rotate-screen {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        color: black;
+        z-index: 999;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+
+      .rotate-screen p {
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      /* Media query for detecting portrait mode */
+      @media only screen and (orientation: portrait) {
+        .rotate-screen {
+          display: flex;
+        }
+
+        .container {
+          display: none;
+        }
+      }
+
+      .npc-stat {
+        display: flex;
+        justify-content: center;
+      }
+      nav {
+        background-color: transparent;
+        overflow: hidden;
+      }
+      nav a {
+        float: right;
+        display: block;
+        color: black;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+      }
+      nav a:hover {
+        background-color: transparent;
+        color: black;
+        text-decoration: none;
+        transform: scale(1.25);
+      }
+
+      h1 {
+        display: flex;
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+      }
+
+      .p1 {
+        display: flex;
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: justify;
+        width: 80%; /* Control the width to ensure justification */
+      }
+
+      iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+        z-index: -1; /* Make sure the iframe is behind any content */
+      }
+
+      #canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1; /* Make sure the canvas is behind any content */
+      }
+
+      .nav {
+        text-shadow: 3px 3px 7px black; /* Black drop-shadow for title text */
+      }
+    </style>
+  </head>
+  <iframe
+    src="https://rive.app/community/12991-24575-npc-waves1/embed"
+    frameborder="0"
+    allow="autoplay"
+    allowfullscreen
+    scrolling="no">
+  </iframe>
+  <canvas id="canvas" width="500" height="500"></canvas>
+  <script src="https://unpkg.com/@rive-app/canvas@latest"></script>
+  <nav class="nav">
+    <a
+      href="https://discord.gg/5xDxHSBm4s
+    "
+      >DISCORD</a
+    >
+    <a href="../whats-on.html">WHATS-ON</a>
+    <a href="../index.html">HOME</a>
+  </nav>
+  <body>
+    <div class="rotate-screen">
+      <p>
+        Please rotate your device to landscape mode for the best experience.
+      </p>
+    </div>
+
+    <div class="container">
+      <button class="fullscreen-btn" onclick="requestFullScreen()">
+        Enter Fullscreen
+      </button>
+
+      <br />
+      <br />
+      <div class="showings">
+        <img src="../posters/DM4.jpeg" style="width: auto; height: 100px" />
+        <div
+          class="showing-box"
+          onclick="selectShowing('Saturday 00:00 Despicable Me 4')">
+          Sat<br />00:00<br />Despicable Me 4
+        </div>
+      </div>
+      <div id="availableSeats">
+        <h1>Nightly Pirate Cinema</h1>
+        Available seats: <span id="availableSeatsCount">0</span>
+      </div>
+
+      <div class="screen">SCREEN</div>
+
+      <div class="seating-plan">
+        <!-- Front Rows (16 seats each) -->
+        <div class="row">
+          <span class="row-label">Row A</span>
+          <div class="seat" onclick="selectSeat('A1')">1</div>
+          <div class="seat" onclick="selectSeat('A2')">2</div>
+          <div class="seat" onclick="selectSeat('A3')">3</div>
+          <div class="seat" onclick="selectSeat('A4')">4</div>
+          <div class="seat" onclick="selectSeat('A5')">5</div>
+          <div class="seat" onclick="selectSeat('A6')">6</div>
+          <div class="seat" onclick="selectSeat('A7')">7</div>
+          <div class="seat" onclick="selectSeat('A8')">8</div>
+          <div class="seat" onclick="selectSeat('A9')">9</div>
+          <div class="seat" onclick="selectSeat('A10')">10</div>
+          <div class="seat" onclick="selectSeat('A11')">11</div>
+          <div class="seat" onclick="selectSeat('A12')">12</div>
+          <div class="seat" onclick="selectSeat('A13')">13</div>
+          <div class="seat" onclick="selectSeat('A14')">14</div>
+          <div class="seat" onclick="selectSeat('A15')">15</div>
+          <div class="seat" onclick="selectSeat('A16')">16</div>
+        </div>
+        <div class="row">
+          <span class="row-label">Row B</span>
+          <div class="seat" onclick="selectSeat('B1')">1</div>
+          <div class="seat" onclick="selectSeat('B2')">2</div>
+          <div class="seat" onclick="selectSeat('B3')">3</div>
+          <div class="seat" onclick="selectSeat('B4')">4</div>
+          <div class="seat" onclick="selectSeat('B5')">5</div>
+          <div class="seat" onclick="selectSeat('B6')">6</div>
+          <div class="seat" onclick="selectSeat('B7')">7</div>
+          <div class="seat" onclick="selectSeat('B8')">8</div>
+          <div class="seat" onclick="selectSeat('B9')">9</div>
+          <div class="seat" onclick="selectSeat('B10')">10</div>
+          <div class="seat" onclick="selectSeat('B11')">11</div>
+          <div class="seat" onclick="selectSeat('B12')">12</div>
+          <div class="seat" onclick="selectSeat('B13')">13</div>
+          <div class="seat" onclick="selectSeat('B14')">14</div>
+          <div class="seat" onclick="selectSeat('B15')">15</div>
+          <div class="seat" onclick="selectSeat('B16')">16</div>
+        </div>
+        <div class="row">
+          <span class="row-label">Row C</span>
+          <div class="seat" onclick="selectSeat('C1')">1</div>
+          <div class="seat" onclick="selectSeat('C2')">2</div>
+          <div class="seat" onclick="selectSeat('C3')">3</div>
+          <div class="seat" onclick="selectSeat('C4')">4</div>
+          <div class="seat" onclick="selectSeat('C5')">5</div>
+          <div class="seat" onclick="selectSeat('C6')">6</div>
+          <div class="seat" onclick="selectSeat('C7')">7</div>
+          <div class="seat" onclick="selectSeat('C8')">8</div>
+          <div class="seat" onclick="selectSeat('C9')">9</div>
+          <div class="seat" onclick="selectSeat('C10')">10</div>
+          <div class="seat" onclick="selectSeat('C11')">11</div>
+          <div class="seat" onclick="selectSeat('C12')">12</div>
+          <div class="seat" onclick="selectSeat('C13')">13</div>
+          <div class="seat" onclick="selectSeat('C14')">14</div>
+          <div class="seat" onclick="selectSeat('C15')">15</div>
+          <div class="seat" onclick="selectSeat('C16')">16</div>
+        </div>
+        <div class="row">
+          <span class="row-label">Row D</span>
+          <div class="seat" onclick="selectSeat('D1')">1</div>
+          <div class="seat" onclick="selectSeat('D2')">2</div>
+          <div class="seat" onclick="selectSeat('D3')">3</div>
+          <div class="seat" onclick="selectSeat('D4')">4</div>
+          <div class="seat" onclick="selectSeat('D5')">5</div>
+          <div class="seat" onclick="selectSeat('D6')">6</div>
+          <div class="seat" onclick="selectSeat('D7')">7</div>
+          <div class="seat" onclick="selectSeat('D8')">8</div>
+          <div class="seat" onclick="selectSeat('D9')">9</div>
+          <div class="seat" onclick="selectSeat('D10')">10</div>
+          <div class="seat" onclick="selectSeat('D11')">11</div>
+          <div class="seat" onclick="selectSeat('D12')">12</div>
+          <div class="seat" onclick="selectSeat('D13')">13</div>
+          <div class="seat" onclick="selectSeat('D14')">14</div>
+          <div class="seat" onclick="selectSeat('D15')">15</div>
+          <div class="seat" onclick="selectSeat('D16')">16</div>
+        </div>
+
+        <div class="row">
+          <span class="row-label"></span>
+          <div class="noseat"></div>
+        </div>
+        <div class="row">
+          <span class="row-label"></span>
+          <div class="noseat"></div>
+        </div>
+        <div class="row">
+          <span class="row-label"></span>
+          <div class="noseat"></div>
+        </div>
+        <div class="row">
+          <span class="row-label"></span>
+          <div class="noseat"></div>
+        </div>
+
+        <!-- Add similar rows for B, C, D here -->
+
+        <!-- Split rows E, F, G -->
+        <!-- Left section for 6 seats -->
+        <div class="row left">
+          <span class="row-label">Row E</span>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="seat" onclick="selectSeat('E1')">1</div>
+          <div class="seat" onclick="selectSeat('E2')">2</div>
+          <div class="seat" onclick="selectSeat('E3')">3</div>
+          <div class="seat" onclick="selectSeat('E4')">4</div>
+          <div class="seat" onclick="selectSeat('E5')">5</div>
+          <div class="seat" onclick="selectSeat('E6')">6</div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="seat" onclick="selectSeat('E7')">7</div>
+          <div class="seat" onclick="selectSeat('E8')">8</div>
+          <div class="seat" onclick="selectSeat('E9')">9</div>
+          <div class="seat" onclick="selectSeat('E10')">10</div>
+          <div class="seat" onclick="selectSeat('E11')">11</div>
+          <div class="seat" onclick="selectSeat('E12')">12</div>
+          <div class="seat" onclick="selectSeat('E13')">13</div>
+          <div class="seat" onclick="selectSeat('E14')">14</div>
+        </div>
+        <div class="row left">
+          <span class="row-label">Row F</span>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="seat" onclick="selectSeat('F1')">1</div>
+          <div class="seat" onclick="selectSeat('F2')">2</div>
+          <div class="seat" onclick="selectSeat('F3')">3</div>
+          <div class="seat" onclick="selectSeat('F4')">4</div>
+          <div class="seat" onclick="selectSeat('F5')">5</div>
+          <div class="seat" onclick="selectSeat('F6')">6</div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="seat" onclick="selectSeat('F7')">7</div>
+          <div class="seat" onclick="selectSeat('F8')">8</div>
+          <div class="seat" onclick="selectSeat('F9')">9</div>
+          <div class="seat" onclick="selectSeat('F10')">10</div>
+          <div class="seat" onclick="selectSeat('F11')">11</div>
+          <div class="seat" onclick="selectSeat('F12')">12</div>
+          <div class="seat" onclick="selectSeat('F13')">13</div>
+          <div class="seat" onclick="selectSeat('F14')">14</div>
+        </div>
+        <div class="row left">
+          <span class="row-label">Row G</span>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="seat" onclick="selectSeat('G1')">1</div>
+          <div class="seat" onclick="selectSeat('G2')">2</div>
+          <div class="seat" onclick="selectSeat('G3')">3</div>
+          <div class="seat" onclick="selectSeat('G4')">4</div>
+          <div class="seat" onclick="selectSeat('G5')">5</div>
+          <div class="seat" onclick="selectSeat('G6')">6</div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="noseat"></div>
+          <div class="seat" onclick="selectSeat('G7')">7</div>
+          <div class="seat" onclick="selectSeat('G8')">8</div>
+          <div class="seat" onclick="selectSeat('G9')">9</div>
+          <div class="seat" onclick="selectSeat('G10')">10</div>
+          <div class="seat" onclick="selectSeat('G11')">11</div>
+          <div class="seat" onclick="selectSeat('G12')">12</div>
+          <div class="seat" onclick="selectSeat('G13')">13</div>
+          <div class="seat" onclick="selectSeat('G14')">14</div>
+        </div>
+
+        <!-- <div class="row right">
+          <span class="row-label">Row E</span>
+          <div class="seat" onclick="selectSeat('E7')">7</div>
+          <div class="seat" onclick="selectSeat('E8')">8</div>
+          <div class="seat" onclick="selectSeat('E9')">9</div>
+          <div class="seat" onclick="selectSeat('E10')">10</div>
+          <div class="seat" onclick="selectSeat('E11')">11</div>
+          <div class="seat" onclick="selectSeat('E12')">12</div>
+          <div class="seat" onclick="selectSeat('E13')">13</div>
+          <div class="seat" onclick="selectSeat('E14')">14</div>
+        </div>
+        <div class="row right">
+          <span class="row-label">Row F</span>
+          <div class="seat" onclick="selectSeat('E7')">7</div>
+          <div class="seat" onclick="selectSeat('E8')">8</div>
+          <div class="seat" onclick="selectSeat('E9')">9</div>
+          <div class="seat" onclick="selectSeat('E10')">10</div>
+          <div class="seat" onclick="selectSeat('E11')">11</div>
+          <div class="seat" onclick="selectSeat('E12')">12</div>
+          <div class="seat" onclick="selectSeat('E13')">13</div>
+          <div class="seat" onclick="selectSeat('E14')">14</div>
+        </div>
+        <div class="row right">
+          <span class="row-label">Row G</span>
+          <div class="seat" onclick="selectSeat('G7')">7</div>
+          <div class="seat" onclick="selectSeat('G8')">8</div>
+          <div class="seat" onclick="selectSeat('G9')">9</div>
+          <div class="seat" onclick="selectSeat('G10')">10</div>
+          <div class="seat" onclick="selectSeat('G11')">11</div>
+          <div class="seat" onclick="selectSeat('G12')">12</div>
+          <div class="seat" onclick="selectSeat('G13')">13</div>
+          <div class="seat" onclick="selectSeat('G14')">14</div>
+        </div> -->
+
+        <!-- Repeat the same for rows F and G -->
+      </div>
+
+      <!-- Form to fill out after seat selection -->
+      <div class="form-container" id="seatForm">
+        <input
+          type="text"
+          id="discordUsername"
+          placeholder="Discord Username" />
+        <input
+          type="text"
+          id="minecraftUsername"
+          placeholder="Minecraft Username" />
+        <input type="text" id="selectedSeat" readonly />
+        <button onclick="submitForm()">Submit</button>
+      </div>
+    </div>
+    <br />
+    <br />
+    <style>
+      footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background-color: transparent;
+        padding-top: 20px;
+        padding-bottom: 15px;
+      }
+    </style>
+    <footer>
+      <p1
+        >Nightly Pirate Cinema © 2024 - All Rights Reserved
+        <a href="https://discord.gg/5xDxHSBm4s">Discord</a></p1
+      >
+    </footer>
+    <script>
+      function requestFullScreen() {
+        const elem = document.documentElement;
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) {
+          elem.mozRequestFullScreen(); // Firefox
+        } else if (elem.webkitRequestFullscreen) {
+          elem.webkitRequestFullscreen(); // Chrome, Safari, and Opera
+        } else if (elem.msRequestFullscreen) {
+          elem.msRequestFullscreen(); // IE/Edge
+        }
+      }
+
+      let selectedSeats = [];
+      const selectedShowing = "Deadpool and Wolverine 3 | 22:00"; // Set the showing directly
+
+      function updateAvailableSeats() {
+        const availableSeats = document.querySelectorAll(
+          ".seat:not(.unavailable)"
+        );
+        const availableSeatsCount = document.getElementById(
+          "availableSeatsCount"
+        );
+        availableSeatsCount.textContent = availableSeats.length;
+      }
+
+      function selectSeat(seatId) {
+        const seatElement = document.querySelector(
+          `.seat[onclick="selectSeat('${seatId}')"]`
+        );
+        if (seatElement.classList.contains("unavailable")) {
+          alert("This seat is unavailable");
+          return;
+        }
+
+        seatElement.classList.toggle("selected");
+
+        if (seatElement.classList.contains("selected")) {
+          selectedSeats.push(seatId);
+        } else {
+          selectedSeats = selectedSeats.filter((seat) => seat !== seatId);
+        }
+
+        if (selectedSeats.length > 1) {
+          alert("You can only select 1 seat.");
+          seatElement.classList.remove("selected");
+          selectedSeats.pop();
+        }
+
+        document.getElementById("selectedSeat").value =
+          selectedSeats.join(", ");
+        document.getElementById("seatForm").classList.add("active");
+      }
+
+      function submitForm() {
+        const discordUsername =
+          document.getElementById("discordUsername").value;
+        const minecraftUsername =
+          document.getElementById("minecraftUsername").value;
+        const selectedSeat = document.getElementById("selectedSeat").value;
+
+        const webhookURL =
+          "https://discord.com/api/webhooks/1285281279863951391/kfDLVfCVcr9VHYaxBmZ1aJl5S0CAzDvnKD6j7JM7umsZIDmt4SsnfGbQ9f12bcWJoWvN";
+
+        const payload = JSON.stringify({
+          embeds: [
+            {
+              author: {
+                name: "NPC - Seat Reserve",
+              },
+              title: "Seat reservation",
+              fields: [
+                {
+                  name: "Discord Username",
+                  value: discordUsername,
+                },
+                {
+                  name: "Minecraft Username",
+                  value: minecraftUsername,
+                },
+                {
+                  name: "Selected Seats",
+                  value: selectedSeat,
+                },
+                {
+                  name: "Selected Showing",
+                  value: "Despicable Me 4 | 00:00",
+                },
+              ],
+              color: 3447003,
+            },
+          ],
+        });
+
+        fetch(webhookURL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: payload,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Success:", data);
+            alert("Form submitted successfully!");
+            document.getElementById("seatForm").classList.remove("active");
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("Form submitted successfully!");
+          });
+      }
+
+      updateAvailableSeats();
+    </script>
+  </body>
+</html>

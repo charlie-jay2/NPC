@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Audio Playback</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden; /* Prevent scrollbars */
+        background-color: black; /* Set background color */
+      }
+
+      .logo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Center the image */
+        z-index: 1;
+        width: 400px; /* Adjust the size of the logo */
+        height: auto; /* Maintain aspect ratio */
+      }
+    </style>
+  </head>
+  <body>
+    <img src="./logo.png" class="logo" alt="Logo" />
+
+    <audio id="backgroundAudio" preload="auto">
+      <source src="./cs.wav" type="audio/wav" />
+      Your browser does not support the audio tag.
+    </audio>
+
+    <script>
+      let lastPressTime = 0;
+      const fadeDuration = 2000; // Duration of the fade out effect in milliseconds
+      const audio = document.getElementById("backgroundAudio");
+      let isFading = false;
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "3") {
+          const currentTime = Date.now();
+
+          // Check if 2 seconds have passed since the last press
+          if (currentTime - lastPressTime >= 2000) {
+            if (audio.paused) {
+              audio.volume = 1; // Reset volume to full when playing
+              audio.play();
+              isFading = false;
+            } else if (!isFading) {
+              fadeOutAudio();
+              isFading = true;
+            }
+
+            lastPressTime = currentTime; // Update the last press time
+          }
+        }
+      });
+
+      function fadeOutAudio() {
+        const fadeStep = 0.1; // Volume decrement step
+        let volume = audio.volume;
+
+        const interval = setInterval(() => {
+          if (volume > 0) {
+            volume = Math.max(0, volume - fadeStep);
+            audio.volume = volume;
+          } else {
+            clearInterval(interval);
+            audio.pause();
+          }
+        }, fadeDuration / (1 / fadeStep)); // Calculate interval based on fadeDuration
+      }
+    </script>
+  </body>
+</html>
